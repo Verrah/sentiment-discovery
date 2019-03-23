@@ -16,7 +16,9 @@ from cfg import cfg, configure_usage
 
 
 def make_batch(data, bsz):
-	ids = torch.ByteTensor(data.encode()).long()
+	b_a = bytearray()
+	b_a.extend(map(ord, data))
+	ids = torch.ByteTensor(b_a).long()
 	nbatch = ids.size(0) // bsz
 	ids = ids.narrow(0, 0, nbatch * bsz)
 	ids = ids.view(bsz, -1).contiguous()
