@@ -1,5 +1,6 @@
 import os
 import copy
+import numpy as np
 
 import sentiment_discovery.data_utils as data_utils
 
@@ -74,12 +75,12 @@ def should_split(split):
 
 def get_split(cfg, opt):
 	splits = []
-	if opt.split.find(',') != -1: 
-		splits = [float(s) for s in opt.split.split(',')]
-	elif opt.split.find('/') != -1:
-		splits = [float(s) for s in opt.split.split('/')]
+	if opt.n_split.find(',') != -1: 
+		splits = [float(s) for s in opt.n_split.split(',')]
+	elif opt.n_split.find('/') != -1:
+		splits = [float(s) for s in opt.n_split.split('/')]
 	else:
-		splits = [float(opt.split)]
+		splits = [float(opt.n_split)]
 	split_total = sum(splits)
 	if split_total < 1.:
 		splits.append(1-split_total)
@@ -90,7 +91,7 @@ def get_split(cfg, opt):
 		splits[1] = 0.
 	if opt.test != 'None':
 		splits[2] = 0.
-	return splits/sum(splits)
+	return list(np.array(splits)/sum(splits))
 
 def configure_data(parser):
 	"""add cmdline flags for configuring datasets"""
@@ -122,7 +123,7 @@ def configure_data(parser):
 						help='delimiter used to parse csv testfiles')
 	parser.add_argument('-binarize_sent', action='store_true',
 						help='binarize sentiment values to 0 or 1 if they\'re on a different scale')
-	parser.add_argument('-split', default='1.',
+	parser.add_argument('-n_split', default='1.',
 						help='comma-separated list of proportions for training, validation, and test split')
 	parser.add_argument('-lazy', action='store_true',
 						help='whether to lazy evaluate ONLY the training data set')
