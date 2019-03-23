@@ -130,7 +130,7 @@ def visualize(text, embed, rnn, init_state, seq_length, temperature=0, overwrite
 	if logger is not None:
 		save_str = logger.get_log_dir('heatmaps')
 	save_str = os.path.join(save_str, ''.join(out_text[:50])+'.png')
-	plot_neuron_heatmap(out_text, out_values, save_str, negate)
+	#plot_neuron_heatmap(out_text, out_values, save_str, negate)
 
 
 if __name__ == '__main__':
